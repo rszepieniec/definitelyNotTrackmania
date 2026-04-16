@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarController3 : MonoBehaviour
+public class CarController2 : MonoBehaviour
 {
     private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
@@ -26,7 +26,7 @@ public class CarController3 : MonoBehaviour
     [SerializeField] private WheelCollider rearRightWheelCollider;
 
     [SerializeField] private Transform frontLeftWheelTransform;
-    [SerializeField] private Transform frontRightWheeTransform;
+    [SerializeField] private Transform frontRightWheelTransform;
     [SerializeField] private Transform rearLeftWheelTransform;
     [SerializeField] private Transform rearRightWheelTransform;
 
@@ -38,7 +38,7 @@ public class CarController3 : MonoBehaviour
         rb.centerOfMass = new Vector3(0, -0.5f, 0);
     }
 
-    private void FixedUpdate()
+    private void FixedUpdate() // miezyc delta time i odpowiednio dostosowywać krok
     {
         GetInput();
         HandleMotor();
@@ -80,7 +80,7 @@ public class CarController3 : MonoBehaviour
     private void UpdateWheels()
     {
         UpdateSingleWheel(frontLeftWheelCollider, frontLeftWheelTransform);
-        UpdateSingleWheel(frontRightWheelCollider, frontRightWheeTransform);
+        UpdateSingleWheel(frontRightWheelCollider, frontRightWheelTransform);
         UpdateSingleWheel(rearRightWheelCollider, rearRightWheelTransform);
         UpdateSingleWheel(rearLeftWheelCollider, rearLeftWheelTransform);
     }

@@ -609,7 +609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   offset: {x: 0, y: 1.5, z: -3}
-  target: {fileID: 1821061725}
+  target: {fileID: 3646288971045762255}
   translateSpeed: 5
   rotationSpeed: 5
 --- !u!1001 &390403459
@@ -1377,7 +1377,7 @@ Transform:
   m_GameObject: {fileID: 714243521}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.05, y: 0, z: 0}
   m_LocalScale: {x: 50, y: 26, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3430,12 +3430,15 @@ MonoBehaviour:
   motorForce: 1000
   breakForce: 3000
   maxSteerAngle: 30
+  maxSpeed: 50
+  accelerationDecay: 1.5
+  brakingDecay: 2.5
   frontLeftWheelCollider: {fileID: 17057595}
   frontRightWheelCollider: {fileID: 1473711919}
   rearLeftWheelCollider: {fileID: 1049386389}
   rearRightWheelCollider: {fileID: 1860457186}
   frontLeftWheelTransform: {fileID: 3218014154367098719}
-  frontRightWheeTransform: {fileID: 359839785404999651}
+  frontRightWheelTransform: {fileID: 359839785404999651}
   rearLeftWheelTransform: {fileID: 5382173224735254447}
   rearRightWheelTransform: {fileID: 204096089366760325}
 --- !u!4 &5382173224735254447
