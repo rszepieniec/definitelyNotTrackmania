@@ -1,9 +1,9 @@
 using UnityEngine;
-using Cinemachine;
+using Unity.Cinemachine;
 
 public class VCamRMBLook : MonoBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera cam;
+    [SerializeField] private CinemachineCamera cam;
     [SerializeField] private Transform target;
 
     public float sensitivity = 3f;
