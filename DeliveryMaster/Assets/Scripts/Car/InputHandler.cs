@@ -8,6 +8,11 @@ public class InputHandler : MonoBehaviour
     [SerializeField]
     CarHandler carHandler;
 
+    public void SetCarHandler(CarHandler handler)
+    {
+        carHandler = handler;
+    }
+
     void Update()
     {
         Vector2 input = Vector2.zero;

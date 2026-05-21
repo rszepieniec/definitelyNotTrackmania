@@ -32,6 +32,11 @@ public class CameraFollow : MonoBehaviour
         currentPitch = defaultPitch = angles.x;
     }
 
+    public void SetTarget(Transform newTarget)
+    {
+        target = newTarget;
+    }
+
     private void LateUpdate()
     {
         HandleInput();
