@@ -49,17 +49,17 @@ public class ShopDataManager : MonoBehaviour
             UserProfile = new UserProfile
             {
                 account = 0,
-                ownedCarIds = new List<string> { "standard" },
+                ownedCarIds = new List<string> { "sedan" },
                 ownedCarColours = new List<OwnedCarColours>
                 {
                     new OwnedCarColours
                     {
-                        carId = "standard",
-                        colourIds = new List<string> { "standard_blue" }
+                        carId = "sedan",
+                        colourIds = new List<string> { "sedan_white" }
                     }
                 },
-                selectedCarId = "standard",
-                selectedColourId = "standard_blue"
+                selectedCarId = "sedan",
+                selectedColourId = "sedan_white"
             };
             SaveUserProfile();
         }

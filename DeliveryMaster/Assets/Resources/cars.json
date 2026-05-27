@@ -1,10 +1,10 @@
 {
   "cars": [
     {
-      "id": "standard",
-      "name": "STANDARD CAR",
+      "id": "sedan",
+      "name": "SEDAN",
       "price": 0,
-      "image": "Cars/standard_preview",
+      "image": "Cars/sedan_white",
       "characteristics": {
         "speed": 2,
         "acceleration": 3,
@@ -12,45 +12,45 @@
         "braking": 3
       },
       "colours": [
-        { "id": "standard_blue",   "name": "Blue",   "image": "Cars/standard_blue",   "price": 0     },
-        { "id": "standard_red",    "name": "Red",     "image": "Cars/standard_red",    "price": 5000  },
-        { "id": "standard_yellow", "name": "Yellow",  "image": "Cars/standard_yellow", "price": 12500 }
+        { "id": "sedan_white", "name": "White", "image": "Cars/sedan_white", "price": 0    },
+        { "id": "sedan_blue",  "name": "Blue",  "image": "Cars/sedan_blue",  "price": 5000 },
+        { "id": "sedan_gray",  "name": "Gray",  "image": "Cars/sedan_gray",  "price": 8000 }
       ],
       "upgrades": []
     },
     {
-      "id": "wagon",
-      "name": "SUPER CAR",
+      "id": "suv",
+      "name": "SUV",
       "price": 12500,
-      "image": "Cars/wagon_preview",
+      "image": "Cars/suv_green",
       "characteristics": {
         "speed": 3,
-        "acceleration": 4,
+        "acceleration": 3,
         "handling": 3,
         "braking": 4
       },
       "colours": [
-        { "id": "wagon_blue",   "name": "Blue",   "image": "Cars/wagon_blue",   "price": 0     },
-        { "id": "wagon_red",    "name": "Red",     "image": "Cars/wagon_red",    "price": 5000  },
-        { "id": "wagon_yellow", "name": "Yellow",  "image": "Cars/wagon_yellow", "price": 12500 }
+        { "id": "suv_green",  "name": "Dark Green", "image": "Cars/suv_green",  "price": 0     },
+        { "id": "suv_brown",  "name": "Brown",      "image": "Cars/suv_brown",  "price": 6000  },
+        { "id": "suv_purple", "name": "Purple",     "image": "Cars/suv_purple", "price": 10000 }
       ],
       "upgrades": []
     },
     {
       "id": "truck",
-      "name": "SUPER X2 CAR",
+      "name": "TRUCK",
       "price": 25000,
-      "image": "Cars/truck_preview",
+      "image": "Cars/truck_red",
       "characteristics": {
         "speed": 4,
-        "acceleration": 5,
+        "acceleration": 4,
         "handling": 2,
         "braking": 3
       },
       "colours": [
-        { "id": "truck_blue",   "name": "Blue",   "image": "Cars/truck_blue",   "price": 0     },
-        { "id": "truck_red",    "name": "Red",     "image": "Cars/truck_red",    "price": 5000  },
-        { "id": "truck_yellow", "name": "Yellow",  "image": "Cars/truck_yellow", "price": 12500 }
+        { "id": "truck_red",   "name": "Red",        "image": "Cars/truck_red",   "price": 0 },
+        { "id": "truck_green", "name": "Dark Green", "image": "Cars/truck_green", "price": 5000    },
+        { "id": "truck_blue",  "name": "Blue",       "image": "Cars/truck_blue",  "price": 8000 }
       ],
       "upgrades": []
     }
