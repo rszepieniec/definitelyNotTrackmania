@@ -48,9 +48,16 @@ public class ShopDataManager : MonoBehaviour
         {
             UserProfile = new UserProfile
             {
-                coins = 0,
+                account = 0,
                 ownedCarIds = new List<string> { "standard" },
-                ownedColourIds = new List<string> { "standard_blue" },
+                ownedCarColours = new List<OwnedCarColours>
+                {
+                    new OwnedCarColours
+                    {
+                        carId = "standard",
+                        colourIds = new List<string> { "standard_blue" }
+                    }
+                },
                 selectedCarId = "standard",
                 selectedColourId = "standard_blue"
             };
@@ -61,6 +68,7 @@ public class ShopDataManager : MonoBehaviour
     public void SaveUserProfile()
     {
         File.WriteAllText(_savePath, JsonUtility.ToJson(UserProfile, true));
+        AccountDisplay.Instance?.Refresh();
     }
 
     // ── Queries ──────────────────────────────────────────────────────────────
@@ -74,20 +82,40 @@ public class ShopDataManager : MonoBehaviour
     public bool OwnsCar(string carId) =>
         UserProfile.ownedCarIds.Contains(carId);
 
-    public bool OwnsColour(string colourId) =>
-        UserProfile.ownedColourIds.Contains(colourId);
+    public bool OwnsColour(string carId, string colourId)
+    {
+        var entry = UserProfile.ownedCarColours.Find(e => e.carId == carId);
+        return entry != null && entry.colourIds.Contains(colourId);
+    }
+
+    public bool CanAfford(int price) => UserProfile.account >= price;
 
     // ── Mutations ────────────────────────────────────────────────────────────
+
+    private void AddOwnedColour(string carId, string colourId)
+    {
+        var entry = UserProfile.ownedCarColours.Find(e => e.carId == carId);
+        if (entry == null)
+        {
+            entry = new OwnedCarColours { carId = carId, colourIds = new List<string>() };
+            UserProfile.ownedCarColours.Add(entry);
+        }
+        if (!entry.colourIds.Contains(colourId))
+            entry.colourIds.Add(colourId);
+    }
 
     public bool BuyCar(string carId)
     {
         CarData car = GetCar(carId);
-        if (car == null || OwnsCar(carId)) return false;
+        if (car == null || OwnsCar(carId) || UserProfile.account < car.price) return false;
 
-        // TODO: restore coins check before release
-        // if (UserProfile.coins < car.price) return false;
-        // UserProfile.coins -= car.price;
+        UserProfile.account -= car.price;
         UserProfile.ownedCarIds.Add(carId);
+
+        foreach (var colour in car.colours)
+            if (colour.price == 0)
+                AddOwnedColour(carId, colour.id);
+
         SaveUserProfile();
         return true;
     }
@@ -95,29 +123,26 @@ public class ShopDataManager : MonoBehaviour
     public bool BuyColour(CarData car, string colourId)
     {
         ColourData colour = GetColour(car, colourId);
-        if (colour == null || OwnsColour(colourId)) return false;
+        if (colour == null || OwnsColour(car.id, colourId) || UserProfile.account < colour.price) return false;
 
-        // TODO: restore coins check before release
-        // if (UserProfile.coins < colour.price) return false;
-        // UserProfile.coins -= colour.price;
-        UserProfile.ownedColourIds.Add(colourId);
+        UserProfile.account -= colour.price;
+        AddOwnedColour(car.id, colourId);
         SaveUserProfile();
         return true;
     }
 
-    // Marks this car+colour as the active selection for the next game session.
     public void SelectCar(string carId, string colourId)
     {
-        if (!OwnsCar(carId) || !OwnsColour(colourId)) return;
+        if (!OwnsCar(carId) || !OwnsColour(carId, colourId)) return;
         UserProfile.selectedCarId = carId;
         UserProfile.selectedColourId = colourId;
+        Debug.Log($"SelectCar saved: {carId} / {colourId}");
         SaveUserProfile();
     }
 
-    // Dev helper – add coins directly (e.g. from MissionManager rewards)
-    public void AddCoins(int amount)
+    public void AddToAccount(int amount)
     {
-        UserProfile.coins += amount;
+        UserProfile.account += amount;
         SaveUserProfile();
     }
 }

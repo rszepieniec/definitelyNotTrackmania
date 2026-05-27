@@ -40,9 +40,6 @@ public class WorkshopUI : MonoBehaviour
     [SerializeField] private Color barFilledColour = new Color(1f, 0.68f, 0f);
     [SerializeField] private Color barEmptyColour  = new Color(0.18f, 0.18f, 0.18f);
 
-    [Header("Coins Display")]
-    [SerializeField] private TextMeshProUGUI coinsText;
-
     private int _carIndex;    // index into CarDatabase.cars (0-2)
     private int _colourIndex; // index into car.colours (0-2)
 
@@ -131,7 +128,7 @@ public class WorkshopUI : MonoBehaviour
         var car = mgr.CarDatabase.cars[_carIndex];
         if (!mgr.OwnsCar(car.id)) return;
         var colour = car.colours[_colourIndex];
-        if (mgr.OwnsColour(colour.id))
+        if (mgr.OwnsColour(car.id, colour.id))
             mgr.SelectCar(car.id, colour.id);
     }
 
@@ -139,15 +136,8 @@ public class WorkshopUI : MonoBehaviour
 
     private void Refresh()
     {
-        RefreshCoins();
         RefreshCarList();
         RefreshCarDetails();
-    }
-
-    private void RefreshCoins()
-    {
-        if (coinsText != null)
-            coinsText.text = $"$ {ShopDataManager.Instance.UserProfile.coins:N0}";
     }
 
     private void RefreshCarList()
@@ -174,7 +164,11 @@ public class WorkshopUI : MonoBehaviour
 
             slot.lockOverlay.SetActive(!owned);
             slot.pricePanel.SetActive(!owned);
-            if (!owned) slot.priceText.text = $"$ {car.price:N0}";
+            if (!owned)
+            {
+                slot.priceText.text = $"$ {car.price:N0}";
+                slot.buyButton.interactable = mgr.CanAfford(car.price);
+            }
         }
     }
 
@@ -184,13 +178,17 @@ public class WorkshopUI : MonoBehaviour
         CarData car = mgr.CarDatabase.cars[_carIndex];
         ColourData colour = car.colours[_colourIndex];
         bool carOwned    = mgr.OwnsCar(car.id);
-        bool colourOwned = mgr.OwnsColour(colour.id);
+        bool colourOwned = mgr.OwnsColour(car.id, colour.id);
 
         Sprite sprite = Resources.Load<Sprite>(colour.image);
         if (carDetailImage != null && sprite != null) carDetailImage.sprite = sprite;
 
         if (colourLockedOverlay != null) colourLockedOverlay.SetActive(!colourOwned);
-        if (buyColourButton    != null) buyColourButton.gameObject.SetActive(!colourOwned && carOwned);
+        if (buyColourButton != null)
+        {
+            buyColourButton.gameObject.SetActive(!colourOwned && carOwned);
+            buyColourButton.interactable = mgr.CanAfford(colour.price);
+        }
         if (!colourOwned && unlockColourPriceText != null)
             unlockColourPriceText.text = $"$ {colour.price:N0}";
 

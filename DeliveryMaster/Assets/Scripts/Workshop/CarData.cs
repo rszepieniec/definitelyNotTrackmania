@@ -49,9 +49,16 @@ public class UpgradeData
 [Serializable]
 public class UserProfile
 {
-    public int coins;
+    public int account;
     public List<string> ownedCarIds;
-    public List<string> ownedColourIds;
+    public List<OwnedCarColours> ownedCarColours;
     public string selectedCarId;
     public string selectedColourId;
+}
+
+[Serializable]
+public class OwnedCarColours
+{
+    public string carId;
+    public List<string> colourIds;
 }
