@@ -279,6 +279,7 @@ public class MissionManager : MonoBehaviour
         int reward = Mathf.RoundToInt(baseReward * multiplier * difficultyMult);
 
         if (CoinManager.Instance != null) CoinManager.Instance.AddCoins(reward);
+        if (RunManager.Instance != null) RunManager.Instance.OnDeliveryCompleted(reward);
         SetState($"{tier} — +{reward} coins  (difficulty {Mathf.RoundToInt(diff * 100)}%)");
 
         if (currentEnd != null) Destroy(currentEnd.gameObject);
