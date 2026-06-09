@@ -23,6 +23,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
+        AudioManager.Instance?.ResumeMusic();
     }
 
     void Pause()
@@ -30,6 +31,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
+        AudioManager.Instance?.PauseMusic();
     }
 
     public void QuitRun()
