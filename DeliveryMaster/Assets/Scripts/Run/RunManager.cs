@@ -88,6 +88,10 @@ public class RunManager : MonoBehaviour
     {
         IsRunActive = false;
         CoinsEarned = Mathf.Max(0, CurrentCoins - StartCoins);
+        if (CoinsEarned > 0)
+            AudioManager.Instance?.PlaySFXThenSFX(AudioManager.Instance.sfxRunComplete, AudioManager.Instance.sfxCoins);
+        else
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxRunFail);
         SceneManager.LoadScene(summarySceneName);
     }
 

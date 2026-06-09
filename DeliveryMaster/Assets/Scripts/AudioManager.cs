@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -8,11 +9,21 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] playlist;
     [Range(0f, 1f)] public float musicVolume = 0.5f;
 
+    [Header("SFX Clips")]
+    public AudioClip sfxDeliverySuccess;
+    public AudioClip sfxDeliveryFail;
+    public AudioClip sfxRunComplete;
+    public AudioClip sfxCoins;
+    public AudioClip sfxRunFail;
+    public AudioClip sfxCrash;
+    public AudioClip sfxHonk;
+
     [Header("SFX")]
     [Range(0f, 1f)] public float sfxVolume = 1f;
 
     private AudioSource musicSource;
     private AudioSource sfxSource;
+    private AudioSource honkSource;
     private int currentTrackIndex = 0;
     private bool isPaused = false;
 
@@ -42,6 +53,13 @@ public class AudioManager : MonoBehaviour
         sfxSource.volume = sfxVolume;
         sfxSource.playOnAwake = false;
 
+        honkSource = gameObject.AddComponent<AudioSource>();
+        honkSource.loop = true;
+        honkSource.volume = sfxVolume;
+        honkSource.playOnAwake = false;
+
+        if (playlist != null && playlist.Length > 1)
+            currentTrackIndex = Random.Range(0, playlist.Length);
         PlayCurrentTrack();
     }
 
@@ -49,7 +67,12 @@ public class AudioManager : MonoBehaviour
     {
         if (!isPaused && !musicSource.isPlaying && playlist != null && playlist.Length > 0)
         {
-            currentTrackIndex = (currentTrackIndex + 1) % playlist.Length;
+            if (playlist.Length > 1)
+            {
+                int next;
+                do { next = Random.Range(0, playlist.Length); } while (next == currentTrackIndex);
+                currentTrackIndex = next;
+            }
             PlayCurrentTrack();
         }
     }
@@ -85,9 +108,39 @@ public class AudioManager : MonoBehaviour
         sfxSource.PlayOneShot(clip, sfxVolume);
     }
 
+    public void PlaySFXThenSFX(AudioClip first, AudioClip second)
+    {
+        if (first == null && second == null) return;
+        StartCoroutine(PlaySequence(first, second));
+    }
+
+    private IEnumerator PlaySequence(AudioClip first, AudioClip second)
+    {
+        if (first != null)
+        {
+            sfxSource.PlayOneShot(first, sfxVolume);
+            yield return new WaitForSecondsRealtime(first.length);
+        }
+        if (second != null)
+            sfxSource.PlayOneShot(second, sfxVolume);
+    }
+
+    public void StartHonk()
+    {
+        if (sfxHonk == null || honkSource.isPlaying) return;
+        honkSource.clip = sfxHonk;
+        honkSource.Play();
+    }
+
+    public void StopHonk()
+    {
+        honkSource.Stop();
+    }
+
     public void SetSFXVolume(float volume)
     {
         sfxVolume = Mathf.Clamp01(volume);
         sfxSource.volume = sfxVolume;
+        honkSource.volume = sfxVolume;
     }
 }

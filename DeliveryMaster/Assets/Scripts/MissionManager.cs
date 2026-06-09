@@ -280,6 +280,7 @@ public class MissionManager : MonoBehaviour
 
         if (CoinManager.Instance != null) CoinManager.Instance.AddCoins(reward);
         if (RunManager.Instance != null) RunManager.Instance.OnDeliveryCompleted(reward);
+        AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxDeliverySuccess);
         SetState($"{tier} — +{reward} coins  (difficulty {Mathf.RoundToInt(diff * 100)}%)");
 
         if (currentEnd != null) Destroy(currentEnd.gameObject);
@@ -303,6 +304,7 @@ public class MissionManager : MonoBehaviour
         currentEnd = null;
         if (timerPanel != null) timerPanel.SetActive(false);
 
+        AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxDeliveryFail);
         SetState("Time's up — delivery failed!");
         RestoreOtherStarts();
     }

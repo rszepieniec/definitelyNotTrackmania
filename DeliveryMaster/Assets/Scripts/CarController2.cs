@@ -43,6 +43,14 @@ public class CarController2 : MonoBehaviour
         rb.centerOfMass = centerOfMassOffset;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+            AudioManager.Instance?.StartHonk();
+        else if (Input.GetKeyUp(KeyCode.H))
+            AudioManager.Instance?.StopHonk();
+    }
+
     private void FixedUpdate()
     {
         GetInput();

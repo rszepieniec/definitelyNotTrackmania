@@ -29,6 +29,7 @@ public class CrashPenalty : MonoBehaviour
     public bool logCrashes = false;
 
     private float lastPenaltyTime = -999f;
+    private float lastCrashSoundTime = -999f;
     private float messageTimeLeft;
 
     private void Start()
@@ -72,6 +73,11 @@ public class CrashPenalty : MonoBehaviour
         if (penalty <= 0) return;
 
         if (CoinManager.Instance != null) CoinManager.Instance.AddCoins(-penalty);
+        if (Time.time - lastCrashSoundTime >= 3f)
+        {
+            AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxCrash);
+            lastCrashSoundTime = Time.time;
+        }
         lastPenaltyTime = Time.time;
 
         ShowCrashMessage(penalty);
