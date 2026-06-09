@@ -8889,7 +8889,7 @@ MonoBehaviour:
   sfxCoins: {fileID: 8300000, guid: 3500faf56d812c1489e1a68a0aa7a951, type: 3}
   sfxRunFail: {fileID: 8300000, guid: 9111d292d0dea014daf585af04db6191, type: 3}
   sfxCrash: {fileID: 8300000, guid: 5c0f5029e842c644e95f8b398d621003, type: 3}
-  sfxHonk: {fileID: 8300000, guid: 5af2515cdc11031459f0630570ff1009, type: 3}
+  sfxHonk: {fileID: 8300000, guid: 68550f643b793a64da1635544d19ffd2, type: 3}
   sfxVolume: 0.1
 --- !u!4 &95550448
 Transform:
