@@ -50,6 +50,11 @@ public class MissionManager : MonoBehaviour
     [Tooltip("Bonus do nagrody za trudność. 1.0 = hard daje 2x w stosunku do easy, 0.5 = 1.5x, 2.0 = 3x.")]
     public float difficultyRewardBonus = 1f;
 
+    [Header("Bonus za typ auta")]
+    public float sedanMultiplier = 1f;
+    public float suvMultiplier = 1.3f;
+    public float truckMultiplier = 1.6f;
+
     [Header("UI")]
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI missionStateText;
@@ -79,7 +84,7 @@ public class MissionManager : MonoBehaviour
     {
         CacheEdges();
         if (timerPanel != null) timerPanel.SetActive(false);
-        SetState("Find a blue marker to start a delivery");
+        SetState("Drive into a checkpoint to start a mission");
     }
 
     private void CacheEdges()
@@ -258,7 +263,7 @@ public class MissionManager : MonoBehaviour
 
         if (timerPanel != null) timerPanel.SetActive(true);
         if (timerText != null) timerText.color = normalTimerColor;
-        SetState("Delivery in progress — reach the red marker!");
+        SetState("Find and drive to the green checkpoint!");
         UpdateTimerUI();
     }
 
@@ -276,12 +281,18 @@ public class MissionManager : MonoBehaviour
 
         float diff = currentActiveStart.difficulty;
         float difficultyMult = 1f + difficultyRewardBonus * diff;
-        int reward = Mathf.RoundToInt(baseReward * multiplier * difficultyMult);
+        int baseRewardCalc = Mathf.RoundToInt(baseReward * multiplier * difficultyMult);
+
+        float carMult = ResolveCarMultiplier(out string carLabel);
+        int carBonus = Mathf.RoundToInt(baseRewardCalc * (carMult - 1f));
+        int reward = baseRewardCalc + carBonus;
 
         if (CoinManager.Instance != null) CoinManager.Instance.AddCoins(reward);
         if (RunManager.Instance != null) RunManager.Instance.OnDeliveryCompleted(reward);
         AudioManager.Instance?.PlaySFX(AudioManager.Instance.sfxDeliverySuccess);
-        SetState($"{tier} — +{reward} coins  (difficulty {Mathf.RoundToInt(diff * 100)}%)");
+
+        string bonusPart = carBonus > 0 ? $", +{carBonus} {carLabel} bonus" : "";
+        SetState($"{tier} — +{reward} coins (difficulty {Mathf.RoundToInt(diff * 100)}%{bonusPart})");
 
         if (currentEnd != null) Destroy(currentEnd.gameObject);
         if (currentActiveStart != null) { activeStarts.Remove(currentActiveStart); Destroy(currentActiveStart.gameObject); }
@@ -340,5 +351,20 @@ public class MissionManager : MonoBehaviour
     private void SetState(string text)
     {
         if (missionStateText != null) missionStateText.text = text;
+    }
+
+    private float ResolveCarMultiplier(out string label)
+    {
+        string carId = "sedan";
+        if (ShopDataManager.Instance != null)
+        {
+            carId = ShopDataManager.Instance.UserProfile.selectedCarId ?? "sedan";
+        }
+        switch (carId)
+        {
+            case "suv":   label = "SUV";   return suvMultiplier;
+            case "truck": label = "Truck"; return truckMultiplier;
+            default:      label = "Sedan"; return sedanMultiplier;
+        }
     }
 }

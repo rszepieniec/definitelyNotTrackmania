@@ -115,6 +115,12 @@ public class RunManager : MonoBehaviour
         var record = BuildPendingRecord(playerName);
         RunRecordsStorage.Append(record);
         LastSavedRecord = record;
+
+        if (ShopDataManager.Instance != null && record.coinsEarned > 0)
+        {
+            ShopDataManager.Instance.AddToAccount(record.coinsEarned);
+        }
+
         SceneManager.LoadScene(mainMenuSceneName);
         Destroy(gameObject);
         Instance = null;
