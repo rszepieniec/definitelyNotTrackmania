@@ -10,11 +10,15 @@ public class RunManager : MonoBehaviour
     [Header("Konfiguracja")]
     [Tooltip("Długość rundy w sekundach (180 = 3 minuty).")]
     public float runDuration = 180f;
+    [Tooltip("Sekundy odliczania przed startem runa.")]
+    public float countdownDuration = 3f;
     public string gameplaySceneName = "MainScene";
     public string summarySceneName = "RunSummary";
     public string mainMenuSceneName = "MainMenu";
 
     public bool IsRunActive { get; private set; }
+    public bool IsCountdown { get; private set; }
+    public float CountdownTimeLeft { get; private set; }
     public float TimeLeft { get; private set; }
     public int StartCoins { get; private set; }
     public int DeliveryCount { get; private set; }
@@ -41,7 +45,8 @@ public class RunManager : MonoBehaviour
 
     private void BeginRun()
     {
-        IsRunActive = true;
+        IsRunActive = false;
+        IsCountdown = false;
         TimeLeft = runDuration;
         DeliveryCount = 0;
         MaxReward = 0;
@@ -62,10 +67,32 @@ public class RunManager : MonoBehaviour
         if (scene.name != gameplaySceneName) return;
         SceneManager.sceneLoaded -= OnSceneLoadedCaptureCoins;
         StartCoins = CurrentCoins;
+
+        IsCountdown = countdownDuration > 0f;
+        CountdownTimeLeft = countdownDuration;
+        if (!IsCountdown)
+        {
+            IsRunActive = true;
+        }
     }
 
     private void Update()
     {
+        if (IsCountdown)
+        {
+            CountdownTimeLeft -= Time.deltaTime;
+            if (CountdownTimeLeft <= -0.6f)
+            {
+                IsCountdown = false;
+                IsRunActive = true;
+            }
+            else if (CountdownTimeLeft <= 0f && !IsRunActive)
+            {
+                IsRunActive = true;
+            }
+            return;
+        }
+
         if (!IsRunActive) return;
 
         TimeLeft -= Time.deltaTime;
