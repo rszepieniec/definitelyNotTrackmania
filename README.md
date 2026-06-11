@@ -53,7 +53,13 @@ Lokalizacja (`Application.persistentDataPath`):
 - Modele 3D miasta z pakietów w `Assets/ithappy/` i `Assets/SimplePoly_City/`
 
 ## Uruchomienie
+Dwa możliwe podejścia:
+---
 
 1. Sklonuj repo, otwórz `DeliveryMaster/` w Unity Hub.
 2. Załaduj scenę `MainMenu`.
 3. **▶ Play** → klik **Start Run** → dostarczasz przez 3 minuty → ranking.
+
+---
+
+1. Odpalić (tylko na Windows) plik .exe
