@@ -16,6 +16,11 @@ public class PauseMenu : MonoBehaviour
             else
                 Pause();
         }
+
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Z))
+            SceneManager.LoadScene("RunSummary");
+#endif
     }
 
     public void Resume()

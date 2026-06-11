@@ -45,7 +45,7 @@ public class RunTimerUI : MonoBehaviour
             if (countdownText != null)
             {
                 SetCountdown(text, col, true);
-                SetTimer("", normalColor);
+                SetTimer(idleText, normalColor);
             }
             else
             {
