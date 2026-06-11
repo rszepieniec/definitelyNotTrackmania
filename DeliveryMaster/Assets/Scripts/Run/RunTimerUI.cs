@@ -45,7 +45,7 @@ public class RunTimerUI : MonoBehaviour
             if (countdownText != null)
             {
                 SetCountdown(text, col, true);
-                SetTimer(idleText, normalColor);
+                if (timerText != null) timerText.gameObject.SetActive(false);
             }
             else
             {
@@ -54,6 +54,7 @@ public class RunTimerUI : MonoBehaviour
             return;
         }
 
+        if (timerText != null) timerText.gameObject.SetActive(true);
         SetCountdown("", normalColor, false);
 
         if (!RunManager.Instance.IsRunActive)
