@@ -45,6 +45,7 @@ public class RunManager : MonoBehaviour
 
     private void BeginRun()
     {
+        AudioManager.Instance?.ResumeMusic();
         IsRunActive = false;
         IsCountdown = false;
         TimeLeft = runDuration;
